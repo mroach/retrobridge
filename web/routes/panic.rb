@@ -24,7 +24,7 @@ module RetroBridge
       _ver = params["Version"] || "1.1"
 
       code = params["ZipCode"]&.strip
-      halt 400, "Missing required `ZipCode` query parameter" if code.empty?
+      halt 400, "Missing required `ZipCode` query parameter" if code.nil? || code.empty?
 
       # There's no way anything under 3 chars can produce a good result.
       halt 400, "Query is too short" if code.length < 3
