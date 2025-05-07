@@ -6,6 +6,7 @@ module RetroBridge
         <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
         <plist version="1.0">
         <dict>
+            <!-- %{place_info} -->
             <key>Temperature</key>
             <integer>%{temperature}</integer>
             <key>Units</key>
@@ -51,6 +52,7 @@ module RetroBridge
       # Temp must be an integer.
       # The weather icons are files in the Stattoo app bundle
       format(template, {
+        place_info: "#{place.name} (#{place.country}) {#{place.latitude},#{place.longitude}}",
         temperature: Weather.c2f(weather.temperature).round,
         units: "F",
         condition: "None",
