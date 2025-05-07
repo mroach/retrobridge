@@ -15,7 +15,8 @@ module RetroBridge
         raise Error, "Request failed: #{resp.status}"
       end
 
-      places = resp.body.fetch("results")
+      # When there are no matches, the "results" key doesn't exist
+      places = resp.body.fetch("results", [])
 
       places.map do |data|
         Place.new(
