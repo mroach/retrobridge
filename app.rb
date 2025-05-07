@@ -9,10 +9,26 @@ module RetroBridge
   class Web < Sinatra::Base
     ROOT = File.dirname(__FILE__)
 
+    enable :logging
+
+    use Rack::ETag
+    use Rack::Runtime
+
+    configure :development do
+      use Rack::Reloader
+    end
+
+    # This app is designed to impersonate other hosts.
+    set :host_authorization, {permitted_hosts: []}
+
     set :root, ROOT
     set :public_folder, File.join(ROOT, "static")
 
-    Dir["./lib/*.rb"].each { require_relative it }
-    Dir["./web/routes/*.rb"].each { require_relative it }
+    # lib contains code that is *not* directly related to serving web requests.
+    # Web services will depend on modules in lib to provide data.
+    Dir["./lib/**/*.rb"].each { require_relative it }
+
+    # Routes are handlers for web requests.
+    Dir["./web/routes/**/*.rb"].each { require_relative it }
   end
 end
