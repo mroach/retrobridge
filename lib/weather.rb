@@ -1,6 +1,6 @@
 module RetroBridge
   class Weather
-    NoWeather = Class.new(StandardError)
+    Error = Class.new(StandardError)
     Report = Data.define(:time, :coordinates, :temperature, :cloud_cover, :rain, :showers, :snowfall, :wind_gusts, :is_day) do
       def day? = is_day
 
@@ -28,7 +28,7 @@ module RetroBridge
       })
 
       unless resp.success?
-        raise NoWeather, "Couldn't load weather for #{latitude},#{longitude}"
+        raise Error, "Couldn't load weather for #{latitude},#{longitude}"
       end
 
       data = resp.body.fetch("current")

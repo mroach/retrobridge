@@ -2,7 +2,7 @@ module RetroBridge
   class Geocoding
     Place = Data.define(:name, :latitude, :longitude, :country, :timezone, :type)
 
-    NotFound = Class.new(StandardError)
+    Error = Class.new(StandardError)
 
     def search(term)
       conn = Faraday.new(url: "https://geocoding-api.open-meteo.com/v1") do |f|
@@ -12,14 +12,10 @@ module RetroBridge
       resp = conn.get("search", {name: term, count: 10, format: "json"})
 
       unless resp.success?
-        raise AirportNotFound, "Request failed: #{resp.status}"
+        raise Error, "Request failed: #{resp.status}"
       end
 
       places = resp.body.fetch("results")
-
-      if places.none?
-        raise NotFound, "No places found for '#{term}'"
-      end
 
       places.map do |data|
         Place.new(
