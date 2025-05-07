@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+set -eu
+
+PORT=${PORT:-3001}
+BIND=${BIND:-0.0.0.0}
+
+bundle exec rackup config.ru -p ${PORT} -o ${BIND}
