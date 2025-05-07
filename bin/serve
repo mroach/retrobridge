@@ -5,4 +5,13 @@ set -eu
 PORT=${PORT:-3001}
 BIND=${BIND:-0.0.0.0}
 
-bundle exec rackup config.ru -p ${PORT} -o ${BIND}
+_term() {
+  echo "We've been asked to terminate"
+  kill -TERM "$child" 2>/dev/null
+}
+
+trap _term SIGTERM SIGINT
+
+bundle exec rackup config.ru -p ${PORT} -o ${BIND} &
+child=$!
+wait "$child"
