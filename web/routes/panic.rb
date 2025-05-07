@@ -23,7 +23,7 @@ module RetroBridge
       # Stattoo 1.2 sends 1.1. No other versions known yet.
       _ver = params["Version"] || "1.1"
 
-      code = params["ZipCode"].strip
+      code = params["ZipCode"]&.strip
       halt 400, "Missing required `ZipCode` query parameter" if code.empty?
 
       # There's no way anything under 3 chars can produce a good result.
